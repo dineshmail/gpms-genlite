@@ -68,3 +68,17 @@ class ProductionUpdate(models.Model):
 
     def __str__(self):
         return f"{self.department} - {self.activity}"
+
+
+
+class AssetStock(models.Model):
+    asset_name = models.CharField(max_length=200)
+
+    quantity = models.PositiveIntegerField(default=0)
+
+    remarks = models.TextField(blank=True)
+
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.asset_name} ({self.quantity})"
