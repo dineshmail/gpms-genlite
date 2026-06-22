@@ -47,3 +47,24 @@ class Issue(models.Model):
 
     def __str__(self):
         return f"{self.issue_id} - {self.title}"
+
+
+
+class ProductionUpdate(models.Model):
+    department = models.ForeignKey(
+        Department,
+        on_delete=models.CASCADE
+    )
+
+    update_date = models.DateField()
+
+    activity = models.CharField(max_length=200)
+
+    quantity = models.PositiveIntegerField(default=0)
+
+    remarks = models.TextField(blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.department} - {self.activity}"
