@@ -1,5 +1,4 @@
 from django.db import models
-
 class Department(models.Model):
     name = models.CharField(max_length=100, unique=True)
     code = models.CharField(max_length=20, unique=True)
@@ -7,17 +6,6 @@ class Department(models.Model):
 
     def __str__(self):
         return self.name
-from django.db import models
-
-class Department(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-    code = models.CharField(max_length=20, unique=True)
-    description = models.TextField(blank=True)
-
-    def __str__(self):
-        return self.name
-
-
 class Employee(models.Model):
     employee_id = models.CharField(max_length=20, unique=True)
     name = models.CharField(max_length=150)
