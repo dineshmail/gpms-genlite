@@ -7,10 +7,9 @@ class IssueForm(forms.ModelForm):
         model = Issue
 
         fields = [
-            "issue_id",
-            "department",
-            "title",
-            "description",
-            "priority",
-            "status",
-        ]
+    "department",
+    "title",
+    "description",
+    "priority",
+    "status",
+]

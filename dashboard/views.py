@@ -28,6 +28,24 @@ def home(request):
 
     employee_count = Employee.objects.count()
 
+    open_issue_count = Issue.objects.filter(
+    status="Open"
+).count()
+    in_progress_count = Issue.objects.filter(
+    status="In Progress"
+).count()
+    resolved_count = Issue.objects.filter(
+    status="Resolved"
+).count()
+
+    closed_count = Issue.objects.filter(
+    status="Closed"
+).count()
+
+    critical_count = Issue.objects.filter(
+    priority="Critical"
+).count()
+
     context = {
     "department_count": Department.objects.count(),
     "issue_count": Issue.objects.count(),
@@ -38,6 +56,12 @@ def home(request):
 
     "open_issues": open_issues,
     "recent_updates": recent_updates,
+
+    "open_issue_count": open_issue_count,
+    "in_progress_count": in_progress_count,
+    "resolved_count": resolved_count,
+    "closed_count": closed_count,
+    "critical_count": critical_count,
 }
 
     return render(request, "dashboard/home.html", context)
