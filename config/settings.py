@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'accounts',
     'production',
     'dashboard',
+    "maintenance",
 
     'django.contrib.admin',
     'django.contrib.auth',
