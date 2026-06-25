@@ -1,4 +1,5 @@
 from django.db import models
+#nothing
 
 class Department(models.Model):
     name = models.CharField(max_length=100, unique=True)
