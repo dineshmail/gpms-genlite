@@ -46,25 +46,16 @@ class Issue(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
-
         if not self.issue_id:
+            last_issue = Issue.objects.order_by("-id").first()
 
-            last_issue = Issue.objects.order_by(
-            "-id"
-        ).first()
+            if last_issue:
+                last_id = int(last_issue.issue_id.replace("ISS", ""))
+                new_id = last_id + 1
+            else:
+                new_id = 1
 
-        if last_issue:
-            last_id = int(
-                last_issue.issue_id.replace(
-                    "ISS",
-                    ""
-                )
-            )
-            new_id = last_id + 1
-        else:
-            new_id = 1
-
-        self.issue_id = f"ISS{new_id:04d}"
+            self.issue_id = f"ISS{new_id:04d}"
 
         super().save(*args, **kwargs)
 
