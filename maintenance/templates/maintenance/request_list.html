@@ -1,112 +1,111 @@
 {% extends "base.html" %}
 
+{% block title %}
+Maintenance Requests
+{% endblock %}
+
 {% block content %}
-<div class="container mt-4">
+
+<div class="container-fluid">
 
     <div class="d-flex justify-content-between align-items-center mb-4">
 
         <h2>Maintenance Requests</h2>
 
-        <a href="/maintenance/requests/new/" class="btn btn-success">
+        <a href="{% url 'maintenance_request_create' %}"
+           class="btn btn-success">
+
             + New Request
+
         </a>
 
     </div>
 
-    <table class="table table-bordered table-hover table-striped">
+    <div class="card shadow">
 
-        <thead class="table-dark">
+        <div class="card-body">
 
-            <tr>
-                <th>Request ID</th>
-                <th>Machine</th>
-                <th>Department</th>
-                <th>Priority</th>
-                <th>Status</th>
-                <th>Engineer</th>
-            </tr>
+            <table class="table table-hover table-bordered align-middle">
 
-        </thead>
+                <thead class="table-dark">
 
-        <tbody>
+                    <tr>
 
-        {% for request in requests %}
+                        <th>Request ID</th>
+                        <th>Machine</th>
+                        <th>Department</th>
+                        <th>Status</th>
+                        <th>Priority</th>
+                        <th>Actions</th>
 
-            <tr>
+                    </tr>
 
-               <td>
-    <a href="{% url 'maintenance_request_detail' request.pk %}">
-        {{ request.request_id }}
-    </a>
-</td>
+                </thead>
 
-                <td>{{ request.machine_name }}</td>
+                <tbody>
 
-                <td>{{ request.department }}</td>
+                    {% for request in requests %}
 
-                <td>
+                    <tr>
 
-                    {% if request.priority == "Critical" %}
-                        <span class="badge bg-danger">Critical</span>
+                        <td>{{ request.request_id }}</td>
 
-                    {% elif request.priority == "High" %}
-                        <span class="badge bg-warning text-dark">High</span>
+                        <td>{{ request.machine_name }}</td>
 
-                    {% elif request.priority == "Medium" %}
-                        <span class="badge bg-info text-dark">Medium</span>
+                        <td>{{ request.department }}</td>
 
-                    {% else %}
-                        <span class="badge bg-success">Low</span>
+                        <td>{{ request.status }}</td>
 
-                    {% endif %}
+                        <td>{{ request.priority }}</td>
 
-                </td>
+                        <td>
 
-                <td>
+                            <a href="{% url 'maintenance_request_detail' request.pk %}"
+                               class="btn btn-primary btn-sm">
 
-                    {% if request.status == "Completed" %}
-                        <span class="badge bg-success">Completed</span>
+                                View
 
-                    {% elif request.status == "In Progress" %}
-                        <span class="badge bg-primary">In Progress</span>
+                            </a>
 
-                    {% elif request.status == "Assigned" %}
-                        <span class="badge bg-warning text-dark">Assigned</span>
+                            <a href="{% url 'maintenance_request_edit' request.pk %}"
+                               class="btn btn-warning btn-sm">
 
-                    {% else %}
-                        <span class="badge bg-danger">Open</span>
+                                Edit
 
-                    {% endif %}
+                            </a>
 
-                </td>
+                            <a href="{% url 'maintenance_request_delete' request.pk %}"
+                               class="btn btn-danger btn-sm">
 
-                <td>
+                                Delete
 
-                    {% if request.assigned_engineer %}
-                        {{ request.assigned_engineer }}
-                    {% else %}
-                        -
-                    {% endif %}
+                            </a>
 
-                </td>
+                        </td>
 
-            </tr>
+                    </tr>
 
-        {% empty %}
+                    {% empty %}
 
-            <tr>
+                    <tr>
 
-                <td colspan="6" class="text-center">
-                    No maintenance requests found.
-                </td>
+                        <td colspan="6" class="text-center">
 
-            </tr>
+                            No maintenance requests available.
 
-        {% endfor %}
+                        </td>
 
-        </tbody>
+                    </tr>
 
-    </table>
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
 
 </div>
 
