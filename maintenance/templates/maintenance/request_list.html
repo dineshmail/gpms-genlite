@@ -21,6 +21,102 @@ Maintenance Requests
 
     </div>
 
+    <!-- Search Form -->
+
+    <form method="GET" class="mb-4">
+
+    <div class="row g-2">
+
+        <div class="col-md-3">
+            <input
+                type="text"
+                name="search"
+                class="form-control"
+                placeholder="Search..."
+                value="{{ search }}">
+        </div>
+
+        <div class="col-md-2">
+            <select name="status" class="form-select">
+
+                <option value="">All Status</option>
+
+                {% for value,label in status_choices %}
+                <option value="{{ value }}"
+                    {% if status == value %}selected{% endif %}>
+                    {{ label }}
+                </option>
+                {% endfor %}
+
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <select name="priority" class="form-select">
+
+                <option value="">All Priority</option>
+
+                {% for value,label in priority_choices %}
+                <option value="{{ value }}"
+                    {% if priority == value %}selected{% endif %}>
+                    {{ label }}
+                </option>
+                {% endfor %}
+
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <select name="department" class="form-select">
+
+                <option value="">All Departments</option>
+
+                {% for dept in departments %}
+                <option value="{{ dept.id }}"
+                    {% if department == dept.id|stringformat:"s" %}selected{% endif %}>
+                    {{ dept.name }}
+                </option>
+                {% endfor %}
+
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <select name="sort" class="form-select">
+
+                <option value="newest"
+                    {% if sort == "newest" %}selected{% endif %}>
+                    Newest
+                </option>
+
+                <option value="oldest"
+                    {% if sort == "oldest" %}selected{% endif %}>
+                    Oldest
+                </option>
+
+            </select>
+        </div>
+
+        <div class="col-md-1 d-grid">
+            <button class="btn btn-primary">
+                Go
+            </button>
+        </div>
+
+    </div>
+
+    <div class="mt-2">
+
+        <a href="{% url 'maintenance_request_list' %}"
+           class="btn btn-secondary btn-sm">
+
+            Reset Filters
+
+        </a>
+
+    </div>
+
+</form>
     <div class="card shadow">
 
         <div class="card-body">
@@ -62,23 +158,17 @@ Maintenance Requests
 
                             <a href="{% url 'maintenance_request_detail' request.pk %}"
                                class="btn btn-primary btn-sm">
-
                                 View
-
                             </a>
 
                             <a href="{% url 'maintenance_request_edit' request.pk %}"
                                class="btn btn-warning btn-sm">
-
                                 Edit
-
                             </a>
 
                             <a href="{% url 'maintenance_request_delete' request.pk %}"
                                class="btn btn-danger btn-sm">
-
                                 Delete
-
                             </a>
 
                         </td>

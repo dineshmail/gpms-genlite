@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from .models import MaintenanceRequest
 from .forms import MaintenanceRequestForm
+from dashboard.models import Department
+from django.db.models import Q
 
 
 def dashboard(request):
@@ -22,10 +24,45 @@ def dashboard(request):
     )
 def request_list(request):
 
-    requests = MaintenanceRequest.objects.order_by("-created_at")
+    search = request.GET.get("search", "")
+    status = request.GET.get("status", "")
+    priority = request.GET.get("priority", "")
+    department = request.GET.get("department", "")
+    sort = request.GET.get("sort", "newest")
+
+    requests = MaintenanceRequest.objects.all()
+
+    if search:
+        requests = requests.filter(
+            Q(request_id__icontains=search) |
+            Q(machine_name__icontains=search) |
+            Q(reported_by__icontains=search)
+        )
+
+    if status:
+        requests = requests.filter(status=status)
+
+    if priority:
+        requests = requests.filter(priority=priority)
+
+    if department:
+        requests = requests.filter(department_id=department)
+
+    if sort == "oldest":
+        requests = requests.order_by("created_at")
+    else:
+        requests = requests.order_by("-created_at")
 
     context = {
         "requests": requests,
+        "search": search,
+        "status": status,
+        "priority": priority,
+        "department": department,
+        "sort": sort,
+        "status_choices": MaintenanceRequest.STATUS_CHOICES,
+        "priority_choices": MaintenanceRequest.PRIORITY_CHOICES,
+        "departments": Department.objects.all(),
     }
 
     return render(
