@@ -7,4 +7,5 @@ urlpatterns =[
     path("requests/new/", views.create_request, name="maintenance_request_create"),
     path("requests/<int:pk>/", views.request_detail, name="maintenance_request_detail"),
     path("requests/<int:pk>/edit/",views.edit_request,name="maintenance_request_edit",),
+    path("requests/<int:pk>/delete/",views.delete_request,name="maintenance_request_delete",),
 ]

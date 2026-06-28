@@ -1,81 +1,91 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Maintenance Request Details</title>
+{% extends "base.html" %}
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
+{% block title %}
+Maintenance Request Details
+{% endblock %}
 
-<body>
+{% block content %}
 
 <div class="container mt-4">
 
-    <h2>Maintenance Request Details</h2>
+    <div class="card shadow">
 
-    <table class="table table-bordered">
+        <div class="card-header bg-primary text-white">
 
-        <tr>
-            <th width="30%">Request ID</th>
-            <td>
-                <a href="/maintenance/requests/{{ request.id }}/">
-                    {{ request.request_id }}
-                </a>
-             </td>
-        </tr>
+            <h3>Maintenance Request Details</h3>
 
-        <tr>
-            <th>Machine</th>
-            <td>{{ request.machine_name }}</td>
-        </tr>
+        </div>
 
-        <tr>
-            <th>Department</th>
-            <td>{{ request.department }}</td>
-        </tr>
+        <div class="card-body">
 
-        <tr>
-            <th>Reported By</th>
-            <td>{{ request.reported_by }}</td>
-        </tr>
+            <table class="table table-bordered">
 
-        <tr>
-            <th>Priority</th>
-            <td>{{ request.priority }}</td>
-        </tr>
+                <tr>
+                    <th width="30%">Request ID</th>
+                    <td>{{ request.request_id }}</td>
+                </tr>
 
-        <tr>
-            <th>Status</th>
-            <td>{{ request.status }}</td>
-        </tr>
+                <tr>
+                    <th>Machine</th>
+                    <td>{{ request.machine_name }}</td>
+                </tr>
 
-        <tr>
-            <th>Assigned Engineer</th>
-            <td>{{ request.assigned_engineer|default:"-" }}</td>
-        </tr>
+                <tr>
+                    <th>Department</th>
+                    <td>{{ request.department }}</td>
+                </tr>
 
-        <tr>
-            <th>Problem Description</th>
-            <td>{{ request.problem_description }}</td>
-        </tr>
+                <tr>
+                    <th>Reported By</th>
+                    <td>{{ request.reported_by }}</td>
+                </tr>
 
-        <tr>
-            <th>Remarks</th>
-            <td>{{ request.remarks|default:"-" }}</td>
-        </tr>
+                <tr>
+                    <th>Priority</th>
+                    <td>{{ request.priority }}</td>
+                </tr>
 
-    </table>
+                <tr>
+                    <th>Status</th>
+                    <td>{{ request.status }}</td>
+                </tr>
 
-   <a href="{% url 'maintenance_request_edit' request.pk %}"
-   class="btn btn-warning">
-    Edit
-</a>
+                <tr>
+                    <th>Assigned Engineer</th>
+                    <td>{{ request.assigned_engineer|default:"-" }}</td>
+                </tr>
 
-<a href="{% url 'maintenance_request_list' %}"
-   class="btn btn-secondary">
-    Back
-</a>
+                <tr>
+                    <th>Problem Description</th>
+                    <td>{{ request.problem_description }}</td>
+                </tr>
+
+                <tr>
+                    <th>Remarks</th>
+                    <td>{{ request.remarks|default:"-" }}</td>
+                </tr>
+
+            </table>
+
+            <a href="{% url 'maintenance_request_edit' request.pk %}"
+               class="btn btn-warning">
+                Edit
+            </a>
+
+            <a href="{% url 'maintenance_request_delete' request.pk %}"
+               class="btn btn-danger">
+                Delete
+            </a>
+
+            <a href="{% url 'maintenance_request_list' %}"
+               class="btn btn-secondary">
+                Back
+            </a>
+
+        </div>
+
+    </div>
 
 </div>
 
-</body>
-</html>
+{% endblock %}

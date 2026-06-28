@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-danger text-white">
+            <h3>Delete Maintenance Request</h3>
+        </div>
+
+        <div class="card-body">
+
+            <p class="fs-5">
+                Are you sure you want to delete this request?
+            </p>
+
+            <table class="table table-bordered">
+
+                <tr>
+                    <th width="30%">Request ID</th>
+                    <td>{{ request.request_id }}</td>
+                </tr>
+
+                <tr>
+                    <th>Machine</th>
+                    <td>{{ request.machine_name }}</td>
+                </tr>
+
+                <tr>
+                    <th>Department</th>
+                    <td>{{ request.department }}</td>
+                </tr>
+
+                <tr>
+                    <th>Status</th>
+                    <td>{{ request.status }}</td>
+                </tr>
+
+            </table>
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <button type="submit" class="btn btn-danger">
+                    Delete
+                </button>
+
+                <a href="{% url 'maintenance_request_detail' request.pk %}"
+                   class="btn btn-secondary">
+                    Cancel
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

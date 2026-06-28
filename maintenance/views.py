@@ -95,3 +95,21 @@ def edit_request(request, pk):
             "form": form,
         },
     )
+def delete_request(request, pk):
+
+    maintenance_request = MaintenanceRequest.objects.get(pk=pk)
+
+    if request.method == "POST":
+        maintenance_request.delete()
+
+        return redirect(
+            "maintenance_request_list"
+        )
+
+    return render(
+        request,
+        "maintenance/request_confirm_delete.html",
+        {
+            "request": maintenance_request,
+        },
+    )
