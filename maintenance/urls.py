@@ -1,10 +1,10 @@
 from django.urls import path
 from . import views
 
-urlpatterns = [
-    path(
-        "",
-        views.dashboard,
-        name="maintenance_dashboard",
-    ),
+urlpatterns =[
+    path("", views.dashboard, name="maintenance_dashboard"),
+    path("requests/", views.request_list, name="maintenance_request_list"),
+    path("requests/new/", views.create_request, name="maintenance_request_create"),
+    path("requests/<int:pk>/", views.request_detail, name="maintenance_request_detail"),
+    path("requests/<int:pk>/edit/",views.edit_request,name="maintenance_request_edit",),
 ]
