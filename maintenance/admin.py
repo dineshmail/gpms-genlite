@@ -30,3 +30,4 @@ class MaintenanceRequestAdmin(admin.ModelAdmin):
     ordering = (
         "-created_at",
     )
+    readonly_fields=("request_id",)

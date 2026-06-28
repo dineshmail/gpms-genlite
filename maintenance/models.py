@@ -68,6 +68,18 @@ class MaintenanceRequest(models.Model):
         null=True,
         blank=True,
     )
+    def save(self, *args, **kwargs):
+     if not self.request_id:
+         last_request = MaintenanceRequest.objects.order_by("-id").first()
+
+         if last_request and last_request.request_id:
+             last_number = int(last_request.request_id.replace("MNT", ""))
+         else:
+             last_number = 0
+
+         self.request_id = f"MNT{last_number + 1:04d}"
+
+     super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.request_id} - {self.machine_name}"
