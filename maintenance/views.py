@@ -6,6 +6,16 @@ from django.db.models import Q
 from .models import Engineer
 from .models import SparePart
 
+from django.http import HttpResponse
+from openpyxl import Workbook
+
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus import Paragraph
+from reportlab.lib.units import inch
+from django.http import HttpResponse
+
 
 def dashboard(request):
 
@@ -316,3 +326,120 @@ def maintenance_report(request):
         "maintenance/report.html",
         context,
     )
+def export_report_excel(request):
+
+    reports = MaintenanceRequest.objects.all().order_by("-created_at")
+
+    workbook = Workbook()
+    worksheet = workbook.active
+    worksheet.title = "Maintenance Report"
+
+    headers = [
+        "Request ID",
+        "Machine",
+        "Department",
+        "Status",
+        "Priority",
+        "Reported By",
+        "Assigned Engineer",
+        "Created Date",
+    ]
+
+    for col_num, header in enumerate(headers, start=1):
+        worksheet.cell(row=1, column=col_num).value = header
+
+    row_num = 2
+
+    for report in reports:
+
+        worksheet.cell(row=row_num, column=1).value = report.request_id
+        worksheet.cell(row=row_num, column=2).value = report.machine_name
+        worksheet.cell(row=row_num, column=3).value = str(report.department)
+        worksheet.cell(row=row_num, column=4).value = report.status
+        worksheet.cell(row=row_num, column=5).value = report.priority
+        worksheet.cell(row=row_num, column=6).value = report.reported_by
+        worksheet.cell(row=row_num, column=7).value = report.assigned_engineer
+        worksheet.cell(row=row_num, column=8).value = report.created_at.strftime("%d-%m-%Y %H:%M")
+
+        row_num += 1
+
+    response = HttpResponse(
+        content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
+
+    response["Content-Disposition"] = (
+        'attachment; filename="Maintenance_Report.xlsx"'
+    )
+
+    workbook.save(response)
+
+    return response
+def export_report_pdf(request):
+
+    response = HttpResponse(content_type="application/pdf")
+    response["Content-Disposition"] = (
+        'attachment; filename="Maintenance_Report.pdf"'
+    )
+
+    doc = SimpleDocTemplate(response)
+
+    styles = getSampleStyleSheet()
+
+    elements = []
+
+    elements.append(
+        Paragraph("<b>GPMS Maintenance Report</b>", styles["Title"])
+    )
+
+    elements.append(
+        Paragraph("Generated from GPMS ERP", styles["Normal"])
+    )
+
+    elements.append(
+        Paragraph("<br/>", styles["Normal"])
+    )
+
+    data = [[
+        "Request ID",
+        "Machine",
+        "Department",
+        "Status",
+        "Priority",
+        "Reported By",
+    ]]
+
+    reports = MaintenanceRequest.objects.all().order_by("-created_at")
+
+    for report in reports:
+
+        data.append([
+            report.request_id,
+            report.machine_name,
+            str(report.department),
+            report.status,
+            report.priority,
+            report.reported_by,
+        ])
+
+    table = Table(data)
+
+    table.setStyle(TableStyle([
+
+        ("BACKGROUND",(0,0),(-1,0),colors.darkblue),
+        ("TEXTCOLOR",(0,0),(-1,0),colors.white),
+
+        ("GRID",(0,0),(-1,-1),1,colors.black),
+
+        ("BACKGROUND",(0,1),(-1,-1),colors.beige),
+
+        ("ALIGN",(0,0),(-1,-1),"CENTER"),
+
+        ("BOTTOMPADDING",(0,0),(-1,0),10),
+
+    ]))
+
+    elements.append(table)
+
+    doc.build(elements)
+
+    return response

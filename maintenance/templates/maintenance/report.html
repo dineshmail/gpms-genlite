@@ -12,12 +12,33 @@ Maintenance Reports
 
 <h2>Maintenance Reports</h2>
 
-<button class="btn btn-secondary" onclick="window.print()">
+<div>
 
-Print Report
+    <button
+        class="btn btn-secondary"
+        onclick="window.print()">
 
-</button>
+        Print
 
+    </button>
+
+    <a
+        href="{% url 'maintenance_report_excel' %}"
+        class="btn btn-success">
+
+        Excel
+
+    </a>
+
+    <a
+        href="{% url 'maintenance_report_pdf' %}"
+        class="btn btn-danger">
+
+        PDF
+
+    </a>
+
+</div>
 </div>
 
 <div class="card shadow mb-4">
