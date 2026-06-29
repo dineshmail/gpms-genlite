@@ -1,7 +1,50 @@
 from django.db import models
 from dashboard.models import Department
 
+class Machine(models.Model):
 
+    STATUS_CHOICES = [
+        ("Running", "Running"),
+        ("Breakdown", "Breakdown"),
+        ("Maintenance", "Maintenance"),
+    ]
+
+    machine_code = models.CharField(
+        max_length=20,
+        unique=True,
+    )
+
+    machine_name = models.CharField(
+        max_length=150,
+    )
+
+    department = models.ForeignKey(
+        Department,
+        on_delete=models.CASCADE,
+    )
+
+    location = models.CharField(
+        max_length=100,
+    )
+
+    manufacturer = models.CharField(
+        max_length=100,
+        blank=True,
+    )
+
+    model_number = models.CharField(
+        max_length=100,
+        blank=True,
+    )
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default="Running",
+    )
+
+    def __str__(self):
+        return f"{self.machine_code} - {self.machine_name}"
 class MaintenanceRequest(models.Model):
 
     PRIORITY_CHOICES = [

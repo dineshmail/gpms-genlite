@@ -150,3 +150,40 @@ def delete_request(request, pk):
             "request": maintenance_request,
         },
     )
+from .models import Machine
+
+
+def machine_list(request):
+
+    search = request.GET.get("search", "")
+    status = request.GET.get("status", "")
+
+    machines = Machine.objects.all()
+
+    if search:
+        machines = machines.filter(
+            Q(machine_code__icontains=search) |
+            Q(machine_name__icontains=search) |
+            Q(manufacturer__icontains=search)
+        )
+
+    if status:
+        machines = machines.filter(status=status)
+
+    context = {
+        "machines": machines.order_by("machine_code"),
+        "search": search,
+        "status": status,
+        "status_choices": Machine.STATUS_CHOICES,
+
+        "total": Machine.objects.count(),
+        "running": Machine.objects.filter(status="Running").count(),
+        "breakdown": Machine.objects.filter(status="Breakdown").count(),
+        "maintenance": Machine.objects.filter(status="Maintenance").count(),
+    }
+
+    return render(
+        request,
+        "maintenance/machine_list.html",
+        context,
+    )

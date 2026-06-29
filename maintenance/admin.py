@@ -1,6 +1,36 @@
 from django.contrib import admin
-from .models import MaintenanceRequest
+from .models import Machine, MaintenanceRequest
 
+
+@admin.register(Machine)
+class MachineAdmin(admin.ModelAdmin):
+
+    list_display = (
+        "machine_code",
+        "machine_name",
+        "department",
+        "location",
+        "manufacturer",
+        "model_number",
+        "status",
+    )
+
+    list_filter = (
+        "department",
+        "status",
+        "manufacturer",
+    )
+
+    search_fields = (
+        "machine_code",
+        "machine_name",
+        "manufacturer",
+        "model_number",
+    )
+
+    ordering = (
+        "machine_code",
+    )
 
 @admin.register(MaintenanceRequest)
 class MaintenanceRequestAdmin(admin.ModelAdmin):
@@ -27,7 +57,6 @@ class MaintenanceRequestAdmin(admin.ModelAdmin):
         "reported_by",
     )
 
-    ordering = (
-        "-created_at",
+    readonly_fields = (
+        "request_id",
     )
-    readonly_fields=("request_id",)
