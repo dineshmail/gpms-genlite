@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block title %}
+Maintenance Reports
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+<h2>Maintenance Reports</h2>
+
+<button class="btn btn-secondary" onclick="window.print()">
+
+Print Report
+
+</button>
+
+</div>
+
+<div class="card shadow mb-4">
+
+<div class="card-body">
+
+<form method="GET">
+
+<div class="row">
+
+<div class="col-md-3">
+
+<select
+name="status"
+class="form-select">
+
+<option value="">All Status</option>
+
+{% for value,label in status_choices %}
+
+<option value="{{ value }}"
+{% if status == value %}selected{% endif %}>
+
+{{ label }}
+
+</option>
+
+{% endfor %}
+
+</select>
+
+</div>
+
+<div class="col-md-3">
+
+<select
+name="priority"
+class="form-select">
+
+<option value="">All Priority</option>
+
+{% for value,label in priority_choices %}
+
+<option value="{{ value }}"
+{% if priority == value %}selected{% endif %}>
+
+{{ label }}
+
+</option>
+
+{% endfor %}
+
+</select>
+
+</div>
+
+<div class="col-md-3">
+
+<select
+name="department"
+class="form-select">
+
+<option value="">All Departments</option>
+
+{% for dept in departments %}
+
+<option value="{{ dept.id }}"
+{% if department == dept.id|stringformat:"s" %}selected{% endif %}>
+
+{{ dept.name }}
+
+</option>
+
+{% endfor %}
+
+</select>
+
+</div>
+
+<div class="col-md-3">
+
+<button
+class="btn btn-primary w-100">
+
+Generate
+
+</button>
+
+</div>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+<div class="card shadow">
+
+<div class="card-header bg-primary text-white">
+
+Total Reports :
+<strong>{{ total_reports }}</strong>
+
+</div>
+
+<div class="card-body">
+
+<table class="table table-bordered table-hover">
+
+<thead class="table-dark">
+
+<tr>
+
+<th>Request ID</th>
+<th>Machine</th>
+<th>Department</th>
+<th>Status</th>
+<th>Priority</th>
+<th>Reported By</th>
+<th>Date</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for report in reports %}
+
+<tr>
+
+<td>{{ report.request_id }}</td>
+
+<td>{{ report.machine_name }}</td>
+
+<td>{{ report.department }}</td>
+
+<td>{{ report.status }}</td>
+
+<td>{{ report.priority }}</td>
+
+<td>{{ report.reported_by }}</td>
+
+<td>{{ report.created_at|date:"d-m-Y" }}</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+
+<td colspan="7" class="text-center">
+
+No Reports Found
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

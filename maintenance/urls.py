@@ -11,4 +11,5 @@ urlpatterns =[
     path("machines/",views.machine_list,name="machine_list",),
     path("engineers/",views.engineer_list,name="engineer_list",),
     path("spareparts/",views.sparepart_list,name="sparepart_list",),
+    path("reports/",views.maintenance_report,name="maintenance_report",),
 ]

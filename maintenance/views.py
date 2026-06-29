@@ -280,3 +280,39 @@ def sparepart_list(request):
         "maintenance/sparepart_list.html",
         context,
     )
+def maintenance_report(request):
+
+    status = request.GET.get("status", "")
+    priority = request.GET.get("priority", "")
+    department = request.GET.get("department", "")
+
+    reports = MaintenanceRequest.objects.all()
+
+    if status:
+        reports = reports.filter(status=status)
+
+    if priority:
+        reports = reports.filter(priority=priority)
+
+    if department:
+        reports = reports.filter(department_id=department)
+
+    context = {
+        "reports": reports.order_by("-created_at"),
+
+        "status": status,
+        "priority": priority,
+        "department": department,
+
+        "status_choices": MaintenanceRequest.STATUS_CHOICES,
+        "priority_choices": MaintenanceRequest.PRIORITY_CHOICES,
+        "departments": Department.objects.all(),
+
+        "total_reports": reports.count(),
+    }
+
+    return render(
+        request,
+        "maintenance/report.html",
+        context,
+    )
