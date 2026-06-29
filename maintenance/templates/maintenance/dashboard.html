@@ -21,15 +21,17 @@ Maintenance Dashboard
 
     </div>
 
-    <div class="row">
+    <!-- Request Analytics -->
 
-        <div class="col-md-4">
+    <div class="row mb-4">
 
-            <div class="card shadow text-center mb-3">
+        <div class="col-md-3">
+
+            <div class="card bg-primary text-white shadow text-center">
 
                 <div class="card-body">
 
-                    <h5>Total Requests</h5>
+                    <h6>Total Requests</h6>
 
                     <h2>{{ total_requests }}</h2>
 
@@ -39,13 +41,13 @@ Maintenance Dashboard
 
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
 
-            <div class="card shadow text-center mb-3">
+            <div class="card bg-warning text-dark shadow text-center">
 
                 <div class="card-body">
 
-                    <h5>Open Requests</h5>
+                    <h6>Open Requests</h6>
 
                     <h2>{{ open_requests }}</h2>
 
@@ -55,13 +57,29 @@ Maintenance Dashboard
 
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
 
-            <div class="card shadow text-center mb-3">
+            <div class="card bg-info text-white shadow text-center">
 
                 <div class="card-body">
 
-                    <h5>Completed Requests</h5>
+                    <h6>In Progress</h6>
+
+                    <h2>{{ progress_requests }}</h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card bg-success text-white shadow text-center">
+
+                <div class="card-body">
+
+                    <h6>Completed</h6>
 
                     <h2>{{ completed_requests }}</h2>
 
@@ -73,9 +91,81 @@ Maintenance Dashboard
 
     </div>
 
-    <div class="card shadow mt-4">
+    <!-- Machine Analytics -->
 
-        <div class="card-header">
+    <div class="row mb-4">
+
+        <div class="col-md-3">
+
+            <div class="card bg-secondary text-white shadow text-center">
+
+                <div class="card-body">
+
+                    <h6>Total Machines</h6>
+
+                    <h2>{{ total_machines }}</h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card bg-success text-white shadow text-center">
+
+                <div class="card-body">
+
+                    <h6>Running</h6>
+
+                    <h2>{{ running_machines }}</h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card bg-danger text-white shadow text-center">
+
+                <div class="card-body">
+
+                    <h6>Breakdown</h6>
+
+                    <h2>{{ breakdown_machines }}</h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card bg-warning text-dark shadow text-center">
+
+                <div class="card-body">
+
+                    <h6>Under Maintenance</h6>
+
+                    <h2>{{ maintenance_machines }}</h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Recent Requests -->
+
+    <div class="card shadow">
+
+        <div class="card-header bg-dark text-white">
 
             <h5 class="mb-0">
 
@@ -87,7 +177,7 @@ Maintenance Dashboard
 
         <div class="card-body">
 
-            <table class="table table-hover table-bordered">
+            <table class="table table-hover table-bordered align-middle">
 
                 <thead class="table-dark">
 
@@ -97,6 +187,8 @@ Maintenance Dashboard
                         <th>Machine</th>
                         <th>Status</th>
                         <th>Priority</th>
+                        <th>Reported By</th>
+                        <th>Department</th>
 
                     </tr>
 
@@ -112,9 +204,28 @@ Maintenance Dashboard
 
                         <td>{{ request.machine_name }}</td>
 
-                        <td>{{ request.status }}</td>
+                        <td>
+
+                            {% if request.status == "Completed" %}
+                                <span class="badge bg-success">{{ request.status }}</span>
+
+                            {% elif request.status == "Open" %}
+                                <span class="badge bg-warning text-dark">{{ request.status }}</span>
+
+                            {% elif request.status == "In Progress" %}
+                                <span class="badge bg-info">{{ request.status }}</span>
+
+                            {% else %}
+                                <span class="badge bg-secondary">{{ request.status }}</span>
+                            {% endif %}
+
+                        </td>
 
                         <td>{{ request.priority }}</td>
+
+                        <td>{{ request.reported_by }}</td>
+
+                        <td>{{ request.department }}</td>
 
                     </tr>
 
@@ -122,9 +233,9 @@ Maintenance Dashboard
 
                     <tr>
 
-                        <td colspan="4" class="text-center">
+                        <td colspan="6" class="text-center">
 
-                            No maintenance requests found.
+                            No maintenance requests available.
 
                         </td>
 

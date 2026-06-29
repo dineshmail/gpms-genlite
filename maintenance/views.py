@@ -1,19 +1,31 @@
 from django.shortcuts import render, redirect
-from .models import MaintenanceRequest
+from .models import MaintenanceRequest, Machine
 from .forms import MaintenanceRequestForm
 from dashboard.models import Department
 from django.db.models import Q
+from .models import Engineer
+
 
 
 def dashboard(request):
 
     context = {
+
+        # Maintenance Requests
         "total_requests": MaintenanceRequest.objects.count(),
         "open_requests": MaintenanceRequest.objects.filter(status="Open").count(),
         "assigned_requests": MaintenanceRequest.objects.filter(status="Assigned").count(),
         "progress_requests": MaintenanceRequest.objects.filter(status="In Progress").count(),
         "completed_requests": MaintenanceRequest.objects.filter(status="Completed").count(),
         "critical_requests": MaintenanceRequest.objects.filter(priority="Critical").count(),
+
+        # Machines
+        "total_machines": Machine.objects.count(),
+        "running_machines": Machine.objects.filter(status="Running").count(),
+        "breakdown_machines": Machine.objects.filter(status="Breakdown").count(),
+        "maintenance_machines": Machine.objects.filter(status="Maintenance").count(),
+
+        # Recent Requests
         "recent_requests": MaintenanceRequest.objects.order_by("-created_at")[:10],
     }
 
@@ -185,5 +197,41 @@ def machine_list(request):
     return render(
         request,
         "maintenance/machine_list.html",
+        context,
+    )
+
+def engineer_list(request):
+
+    search = request.GET.get("search", "")
+    status = request.GET.get("status", "")
+
+    engineers = Engineer.objects.all()
+
+    if search:
+        engineers = engineers.filter(
+            Q(engineer_code__icontains=search) |
+            Q(engineer_name__icontains=search)
+        )
+
+    if status:
+        engineers = engineers.filter(status=status)
+
+    context = {
+
+        "engineers": engineers.order_by("engineer_code"),
+
+        "search": search,
+        "status": status,
+
+        "status_choices": Engineer.STATUS_CHOICES,
+
+        "total": Engineer.objects.count(),
+        "active": Engineer.objects.filter(status="Active").count(),
+        "inactive": Engineer.objects.filter(status="Inactive").count(),
+    }
+
+    return render(
+        request,
+        "maintenance/engineer_list.html",
         context,
     )

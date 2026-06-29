@@ -1,0 +1,218 @@
+{% extends "base.html" %}
+
+{% block title %}
+Engineer Master
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+<h2>Engineer Master</h2>
+
+<a href="/admin/maintenance/engineer/add/"
+class="btn btn-success">
+
++ Add Engineer
+
+</a>
+
+</div>
+
+<div class="row mb-4">
+
+<div class="col-md-4">
+
+<div class="card bg-primary text-white text-center">
+
+<div class="card-body">
+
+<h6>Total Engineers</h6>
+
+<h2>{{ total }}</h2>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="card bg-success text-white text-center">
+
+<div class="card-body">
+
+<h6>Active</h6>
+
+<h2>{{ active }}</h2>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="card bg-danger text-white text-center">
+
+<div class="card-body">
+
+<h6>Inactive</h6>
+
+<h2>{{ inactive }}</h2>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<form method="GET" class="mb-4">
+
+<div class="row">
+
+<div class="col-md-8">
+
+<input
+type="text"
+name="search"
+class="form-control"
+placeholder="Search Engineer"
+value="{{ search }}">
+
+</div>
+
+<div class="col-md-2">
+
+<select
+name="status"
+class="form-select">
+
+<option value="">All Status</option>
+
+{% for value,label in status_choices %}
+
+<option value="{{ value }}"
+{% if status == value %}selected{% endif %}>
+
+{{ label }}
+
+</option>
+
+{% endfor %}
+
+</select>
+
+</div>
+
+<div class="col-md-2">
+
+<button class="btn btn-primary w-100">
+
+Search
+
+</button>
+
+</div>
+
+</div>
+
+</form>
+
+<div class="card shadow">
+
+<div class="card-body">
+
+<table class="table table-bordered table-hover">
+
+<thead class="table-dark">
+
+<tr>
+
+<th>Code</th>
+
+<th>Name</th>
+
+<th>Department</th>
+
+<th>Phone</th>
+
+<th>Email</th>
+
+<th>Status</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for engineer in engineers %}
+
+<tr>
+
+<td>{{ engineer.engineer_code }}</td>
+
+<td>{{ engineer.engineer_name }}</td>
+
+<td>{{ engineer.department }}</td>
+
+<td>{{ engineer.phone }}</td>
+
+<td>{{ engineer.email }}</td>
+
+<td>
+
+{% if engineer.status == "Active" %}
+
+<span class="badge bg-success">
+
+Active
+
+</span>
+
+{% else %}
+
+<span class="badge bg-danger">
+
+Inactive
+
+</span>
+
+{% endif %}
+
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+
+<td colspan="6" class="text-center">
+
+No Engineers Found
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

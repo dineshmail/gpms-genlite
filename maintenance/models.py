@@ -45,6 +45,47 @@ class Machine(models.Model):
 
     def __str__(self):
         return f"{self.machine_code} - {self.machine_name}"
+    
+
+class Engineer(models.Model):
+
+    STATUS_CHOICES = [
+        ("Active", "Active"),
+        ("Inactive", "Inactive"),
+    ]
+
+    engineer_code = models.CharField(
+        max_length=20,
+        unique=True,
+    )
+
+    engineer_name = models.CharField(
+        max_length=100,
+    )
+
+    department = models.ForeignKey(
+        Department,
+        on_delete=models.CASCADE,
+    )
+
+    phone = models.CharField(
+        max_length=15,
+        blank=True,
+    )
+
+    email = models.EmailField(
+        blank=True,
+    )
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default="Active",
+    )
+
+    def __str__(self):
+        return f"{self.engineer_code} - {self.engineer_name}"
+    
 class MaintenanceRequest(models.Model):
 
     PRIORITY_CHOICES = [

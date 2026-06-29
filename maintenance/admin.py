@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Machine, MaintenanceRequest
+from .models import Machine, Engineer, MaintenanceRequest
 
 
 @admin.register(Machine)
@@ -59,4 +60,28 @@ class MaintenanceRequestAdmin(admin.ModelAdmin):
 
     readonly_fields = (
         "request_id",
+    )
+@admin.register(Engineer)
+class EngineerAdmin(admin.ModelAdmin):
+
+    list_display = (
+        "engineer_code",
+        "engineer_name",
+        "department",
+        "phone",
+        "status",
+    )
+
+    list_filter = (
+        "department",
+        "status",
+    )
+
+    search_fields = (
+        "engineer_code",
+        "engineer_name",
+    )
+
+    ordering = (
+        "engineer_code",
     )
