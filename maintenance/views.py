@@ -16,6 +16,7 @@ from reportlab.platypus import Paragraph
 from reportlab.lib.units import inch
 from django.http import HttpResponse
 
+from django.shortcuts import get_object_or_404
 
 def dashboard(request):
 
@@ -443,3 +444,36 @@ def export_report_pdf(request):
     doc.build(elements)
 
     return response
+
+def machine_history(request, pk):
+
+    machine = get_object_or_404(
+        Machine,
+        pk=pk,
+    )
+
+    requests = MaintenanceRequest.objects.filter(
+        machine_name=machine.machine_name
+    ).order_by("-created_at")
+
+    context = {
+
+        "machine": machine,
+
+        "requests": requests,
+
+        "total": requests.count(),
+
+        "open": requests.filter(status="Open").count(),
+
+        "completed": requests.filter(status="Completed").count(),
+
+        "critical": requests.filter(priority="Critical").count(),
+
+    }
+
+    return render(
+        request,
+        "maintenance/machine_history.html",
+        context,
+    )

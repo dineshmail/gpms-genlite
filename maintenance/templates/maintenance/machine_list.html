@@ -165,6 +165,7 @@ Search
 <th>Model</th>
 
 <th>Status</th>
+<th class="text-center">History</th>
 
 </tr>
 
@@ -190,31 +191,36 @@ Search
 
 <td>
 
-{% if machine.status == "Running" %}
+    {% if machine.status == "Running" %}
 
-<span class="badge bg-success">
+        <span class="badge bg-success">
+            {{ machine.status }}
+        </span>
 
-{{ machine.status }}
+    {% elif machine.status == "Breakdown" %}
 
-</span>
+        <span class="badge bg-danger">
+            {{ machine.status }}
+        </span>
 
-{% elif machine.status == "Breakdown" %}
+    {% else %}
 
-<span class="badge bg-danger">
+        <span class="badge bg-warning text-dark">
+            {{ machine.status }}
+        </span>
 
-{{ machine.status }}
+    {% endif %}
 
-</span>
+</td>
 
-{% else %}
+<td class="text-center">
 
-<span class="badge bg-warning text-dark">
+    <a href="{% url 'machine_history' machine.pk %}"
+       class="btn btn-primary btn-sm">
 
-{{ machine.status }}
+        View History
 
-</span>
-
-{% endif %}
+    </a>
 
 </td>
 
@@ -224,7 +230,7 @@ Search
 
 <tr>
 
-<td colspan="7" class="text-center">
+<td colspan="8" class="text-center">
 
 No Machines Found
 

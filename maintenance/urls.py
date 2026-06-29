@@ -14,4 +14,5 @@ urlpatterns =[
     path("reports/",views.maintenance_report,name="maintenance_report",),
     path("reports/excel/",views.export_report_excel,name="maintenance_report_excel",),
     path("reports/pdf/",views.export_report_pdf,name="maintenance_report_pdf",),
+    path("machines/<int:pk>/history/",views.machine_history,name="machine_history",),
 ]
