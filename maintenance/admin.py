@@ -1,6 +1,5 @@
 from django.contrib import admin
-from .models import Machine, MaintenanceRequest
-from .models import Machine, Engineer, MaintenanceRequest
+from .models import Machine, Engineer, SparePart, MaintenanceRequest
 
 
 @admin.register(Machine)
@@ -84,4 +83,28 @@ class EngineerAdmin(admin.ModelAdmin):
 
     ordering = (
         "engineer_code",
+    )
+@admin.register(SparePart)
+class SparePartAdmin(admin.ModelAdmin):
+
+    list_display = (
+        "part_code",
+        "part_name",
+        "category",
+        "stock_quantity",
+        "minimum_stock",
+        "unit",
+    )
+
+    list_filter = (
+        "category",
+    )
+
+    search_fields = (
+        "part_code",
+        "part_name",
+    )
+
+    ordering = (
+        "part_code",
     )

@@ -10,4 +10,5 @@ urlpatterns =[
     path("requests/<int:pk>/delete/",views.delete_request,name="maintenance_request_delete",),
     path("machines/",views.machine_list,name="machine_list",),
     path("engineers/",views.engineer_list,name="engineer_list",),
+    path("spareparts/",views.sparepart_list,name="sparepart_list",),
 ]

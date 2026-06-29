@@ -86,6 +86,52 @@ class Engineer(models.Model):
     def __str__(self):
         return f"{self.engineer_code} - {self.engineer_name}"
     
+class SparePart(models.Model):
+
+    CATEGORY_CHOICES = [
+        ("Electrical", "Electrical"),
+        ("Mechanical", "Mechanical"),
+        ("Hydraulic", "Hydraulic"),
+        ("Pneumatic", "Pneumatic"),
+        ("Consumable", "Consumable"),
+    ]
+
+    part_code = models.CharField(
+        max_length=20,
+        unique=True,
+    )
+
+    part_name = models.CharField(
+        max_length=150,
+    )
+
+    category = models.CharField(
+        max_length=30,
+        choices=CATEGORY_CHOICES,
+    )
+
+    stock_quantity = models.PositiveIntegerField(
+        default=0,
+    )
+
+    minimum_stock = models.PositiveIntegerField(
+        default=5,
+    )
+
+    unit = models.CharField(
+        max_length=20,
+        default="Nos",
+    )
+
+    supplier = models.CharField(
+        max_length=150,
+        blank=True,
+    )
+
+    def __str__(self):
+        return f"{self.part_code} - {self.part_name}"
+    
+    
 class MaintenanceRequest(models.Model):
 
     PRIORITY_CHOICES = [

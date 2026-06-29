@@ -4,7 +4,7 @@ from .forms import MaintenanceRequestForm
 from dashboard.models import Department
 from django.db.models import Q
 from .models import Engineer
-
+from .models import SparePart
 
 
 def dashboard(request):
@@ -233,5 +233,50 @@ def engineer_list(request):
     return render(
         request,
         "maintenance/engineer_list.html",
+        context,
+    )
+
+def sparepart_list(request):
+
+    search = request.GET.get("search", "")
+    category = request.GET.get("category", "")
+
+    parts = SparePart.objects.all()
+
+    if search:
+        parts = parts.filter(
+            Q(part_code__icontains=search) |
+            Q(part_name__icontains=search)
+        )
+
+    if category:
+        parts = parts.filter(category=category)
+
+    low_stock = SparePart.objects.filter(
+        stock_quantity__lte=5
+    ).count()
+
+    context = {
+
+        "parts": parts.order_by("part_code"),
+
+        "search": search,
+        "category": category,
+
+        "category_choices": SparePart.CATEGORY_CHOICES,
+
+        "total": SparePart.objects.count(),
+
+        "low_stock": low_stock,
+
+        "electrical": SparePart.objects.filter(category="Electrical").count(),
+
+        "mechanical": SparePart.objects.filter(category="Mechanical").count(),
+
+    }
+
+    return render(
+        request,
+        "maintenance/sparepart_list.html",
         context,
     )

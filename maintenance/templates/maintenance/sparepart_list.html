@@ -1,0 +1,232 @@
+{% extends "base.html" %}
+
+{% block title %}
+Spare Parts Master
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+<h2>Spare Parts Master</h2>
+
+<a href="/admin/maintenance/sparepart/add/"
+class="btn btn-success">
+
++ Add Spare Part
+
+</a>
+
+</div>
+
+<div class="row mb-4">
+
+<div class="col-md-3">
+
+<div class="card bg-primary text-white text-center">
+
+<div class="card-body">
+
+<h6>Total Parts</h6>
+
+<h2>{{ total }}</h2>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="card bg-danger text-white text-center">
+
+<div class="card-body">
+
+<h6>Low Stock</h6>
+
+<h2>{{ low_stock }}</h2>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="card bg-info text-white text-center">
+
+<div class="card-body">
+
+<h6>Electrical</h6>
+
+<h2>{{ electrical }}</h2>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="card bg-warning text-dark text-center">
+
+<div class="card-body">
+
+<h6>Mechanical</h6>
+
+<h2>{{ mechanical }}</h2>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<form method="GET" class="mb-4">
+
+<div class="row">
+
+<div class="col-md-8">
+
+<input
+type="text"
+name="search"
+class="form-control"
+placeholder="Search Spare Part"
+value="{{ search }}">
+
+</div>
+
+<div class="col-md-2">
+
+<select
+name="category"
+class="form-select">
+
+<option value="">All Categories</option>
+
+{% for value,label in category_choices %}
+
+<option value="{{ value }}"
+{% if category == value %}selected{% endif %}>
+
+{{ label }}
+
+</option>
+
+{% endfor %}
+
+</select>
+
+</div>
+
+<div class="col-md-2">
+
+<button class="btn btn-primary w-100">
+
+Search
+
+</button>
+
+</div>
+
+</div>
+
+</form>
+
+<div class="card shadow">
+
+<div class="card-body">
+
+<table class="table table-bordered table-hover">
+
+<thead class="table-dark">
+
+<tr>
+
+<th>Code</th>
+<th>Name</th>
+<th>Category</th>
+<th>Stock</th>
+<th>Minimum</th>
+<th>Unit</th>
+<th>Supplier</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for part in parts %}
+
+<tr>
+
+<td>{{ part.part_code }}</td>
+
+<td>{{ part.part_name }}</td>
+
+<td>{{ part.category }}</td>
+
+<td>
+
+{% if part.stock_quantity <= part.minimum_stock %}
+
+<span class="badge bg-danger">
+
+{{ part.stock_quantity }}
+
+</span>
+
+{% else %}
+
+<span class="badge bg-success">
+
+{{ part.stock_quantity }}
+
+</span>
+
+{% endif %}
+
+</td>
+
+<td>{{ part.minimum_stock }}</td>
+
+<td>{{ part.unit }}</td>
+
+<td>{{ part.supplier }}</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+
+<td colspan="7" class="text-center">
+
+No Spare Parts Found
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}
